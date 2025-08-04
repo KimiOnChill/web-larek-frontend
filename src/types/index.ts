@@ -1,3 +1,4 @@
+import { IEvents } from "../components/base/events";
 // Layer with Data
 export interface IItem {
   id: string;
@@ -28,10 +29,13 @@ export interface IBasket {
 }
 
 export interface IGallery {
-  preview: string | null; // save cardID here or nothing when no card is picked
-  itemsArr: IItem[];
-  getItemList(itemList: IItem[]): IItem[];// not in doc
-  getItem(itemId: string): IItem;// not in doc
+  //preview: string | null; // save cardID here or nothing when no card is picked
+  //itemsArr: IItem[];
+  //events: IEvents;
+  getItem(itemId: string): string;
+  setItem(item: IItem): void;
+  getItemList(): IItem[];
+  setItemList(itemList: IItem[]): void;
 }
 
 export interface IOrderResponse {
@@ -40,7 +44,7 @@ export interface IOrderResponse {
 }
 
 // View Types
-export type TGallery = Pick<IGallery, 'itemsArr'>; 
+export type TGallery = Partial<IGallery>; 
 export type TCardInfo = Pick<IItem, 'tag' | 'title' | 'image' | 'price'>;
 export type TCounter = Pick<IBasket, 'counter'>;
 export type TItemCard = Pick<IItem, 'tag' | 'title' | 'image' | 'description'| 'isBought' | 'price'>;

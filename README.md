@@ -83,6 +83,7 @@ export interface IBasket {
 export interface IGallery {
   preview: string | null; 
   itemsArr: IItem[];
+  events: IEvents;
 }
 ```
 Интерфейс ответа сервера о заказе:
@@ -158,9 +159,12 @@ export type TSuccessModal = Pick<IBasket, 'fullPrice'>;
 В полях класса хранятся следующие данные:
 - `preview: string | null` - id товара, выбранного для просмотра в модальной окне.
 - `itemsArr: IItem[]` - массив всех товаров, полученный с сервера.
+- `events: IEvents` - экземпляр класса `EventEmitter` для инициации событий при изменении данных.
 Класс предоставляет набор методов для взаимодействия с этими данными:
-- `getItem(itemId: string): IItem` - возвращает карточку товара по ее id.
-- `getItemList(itemList: IItem[]): IItem[]` - возвращает массив товаров, полученных с сервера. 
+- `getItem(itemId: string): string` - для получения карточки товара по ее id для `preview`.
+- `setItem(item: IItem): void` - для сохранения карточки товара по ее id в `preview`.
+- `getItemList(): IItem[]` - для получения массива товаров с сервера.
+- `setItemList(itemList: IItem[]): void` - для сохранения массива товаров, полученных с сервера.  
 
 #### Класс BasketModel
 Класс отвечает за хранение и логику работы с данными карточек товаров, которые добавлены пользователем в корзину.\
@@ -173,7 +177,7 @@ export type TSuccessModal = Pick<IBasket, 'fullPrice'>;
 - `deleteItem(itemId: string, payload: Function | null): void` - удаляет карточку из массива. Если передан колбэк, то выполняет его после удаления, если нет, то вызывает событие изменения массива.
 - `countFullPrice(cardList: ICard[]): number` - считает количество товаров в корзине для использования этого значения в счетчике.
 - `isPossibleToBuy(card: ICard): boolean` - определяет возможно ли купить товар.
-- `clearBasket(itemsList: IItem[]): void` - полная очистка корзины. Вызовется после отправки заказа на сервер. 
+- `clearBasket: void` - полная очистка корзины. Вызовется после отправки заказа на сервер. 
 
 #### Класс CustomerDataModel
 Класс отвечает за хранение и логику работы с данными текущего покупателя.\
