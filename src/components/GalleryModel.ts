@@ -10,23 +10,25 @@ export class GalleryModel implements IGallery {
 		this.events = events;
 	}
 
-	// todo: add check on is avalible
-
+	// получение карточки по ее id для preview
 	getItem(itemId: string) {
 		const itemMatch = this.itemsArr.find((item) => item.id === itemId);
 		this.setItem(itemMatch)
 		return itemMatch;
 	}
 
+	// сохранение карточки по ее id в preview
 	protected setItem(item: IItem) {
 		this.preview = item.id;
 		this.events.emit('item:selected', item);
 	}
 
+	// получение массива товаров с сервера
 	getItemList() {
     return this.itemsArr;
   }
 
+	// сохранение массива товаров
 	setItemList(itemList: IItem[]) {
 		this.itemsArr = itemList;
     this.events.emit('items:changed', itemList)

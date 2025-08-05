@@ -1,8 +1,9 @@
 import './scss/styles.scss';
-import { EventEmitter, IEvents } from "./components/base/events";
+import { EventEmitter } from "./components/base/events";
 import { GalleryModel } from "./components/GalleryModel";
+import { CustomerDataModel } from './components/CustomerDataModel';
 
-// model test
+// galleryModel test
 const test = [
         {
             "id": "854cef69-976d-4c2a-a18c-2aa45046c390",
@@ -95,3 +96,17 @@ console.log(testGallery);
 
 console.log(testGallery.getItem("90973ae5-285c-4b6f-a6d0-65d1d760b102"));
 console.log(testGallery);
+
+// customerModel test
+const testDude = {
+  paymentMethod: 'card',
+  address: 'Fleat St',
+  email: 'example@someMail.wrld',
+  phone: '09929019'
+};
+const testCustomer = new CustomerDataModel;
+
+console.log(testCustomer);
+testCustomer.setCustomerInfo(testDude);
+console.log(testCustomer);
+console.log(testCustomer.checkCustomerValidation('address'));
