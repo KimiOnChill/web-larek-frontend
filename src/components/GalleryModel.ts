@@ -10,12 +10,15 @@ export class GalleryModel implements IGallery {
 		this.events = events;
 	}
 
+	// todo: add check on is avalible
+
 	getItem(itemId: string) {
-		this.preview = this.itemsArr.find((item) => item.id === itemId).id;
-		return this.preview;
+		const itemMatch = this.itemsArr.find((item) => item.id === itemId);
+		this.setItem(itemMatch)
+		return itemMatch;
 	}
 
-	setItem(item: IItem) {
+	protected setItem(item: IItem) {
 		this.preview = item.id;
 		this.events.emit('item:selected', item);
 	}

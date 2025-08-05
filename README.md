@@ -53,7 +53,7 @@ https://github.com/KimiOnChill/web-larek-frontend
 ```
 export interface IItem {
   id: string;
-  tag: string;
+  category: string;
   title: string;
   image: string;
   price: number | null;
@@ -161,7 +161,7 @@ export type TSuccessModal = Pick<IBasket, 'fullPrice'>;
 - `itemsArr: IItem[]` - массив всех товаров, полученный с сервера.
 - `events: IEvents` - экземпляр класса `EventEmitter` для инициации событий при изменении данных.
 Класс предоставляет набор методов для взаимодействия с этими данными:
-- `getItem(itemId: string): string` - для получения карточки товара по ее id для `preview`.
+- `getItem(itemId: string): IItem` - для получения карточки товара по ее id для `preview`.
 - `setItem(item: IItem): void` - для сохранения карточки товара по ее id в `preview`.
 - `getItemList(): IItem[]` - для получения массива товаров с сервера.
 - `setItemList(itemList: IItem[]): void` - для сохранения массива товаров, полученных с сервера.  
