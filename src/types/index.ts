@@ -7,7 +7,13 @@ export interface IItem {
   image: string;
   price: number | null;
   description: string;
-  //!isBought: boolean;
+  isBought?: boolean;
+}
+
+export interface IGallery {
+  getItem(itemId: string): IItem;
+  getItemList(): IItem[];
+  setItemList(itemList: IItem[]): void;
 }
 
 export interface ICustomerModel {
@@ -24,17 +30,13 @@ export interface ICustomer {
 }
 
 export interface IBasket {
-  addItem(item: IItem): void; // not in doc
-  deleteItem(itemId: string, payload: Function | null): void; // not in doc
+  getBasket(): IItem[];
+  addItem(item: IItem): void;
+  deleteItem(itemId: string): void; // not in doc
+  countAmount(): number;
   countFullPrice(): number;
   isPossibleToBuy(item: IItem): boolean;
   clearBasket(): void;
-}
-
-export interface IGallery {
-  getItem(itemId: string): IItem;
-  getItemList(): IItem[];
-  setItemList(itemList: IItem[]): void;
 }
 
 export interface IOrderResponse {

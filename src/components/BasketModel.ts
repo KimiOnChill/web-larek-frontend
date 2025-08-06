@@ -1,10 +1,9 @@
 import { IEvents } from './base/events';
 import { IBasket, IItem } from '../types';
 
-//todo new class for basket items
 //todo create tests
 export class BasketModel implements IBasket {
-  protected itemsList: IItem[] = [];
+  protected basketItemsList: IItem[] = [];
   protected fullPrice: number = 0;
   protected events: IEvents;
 
@@ -12,29 +11,43 @@ export class BasketModel implements IBasket {
     this.events = events;
   }
 
+  getBasket() {
+    return this.basketItemsList;
+  }
+
   addItem(item: IItem) {
-    this.itemsList.push(item);
+    this.basketItemsList.push(item);
     this.events.emit('basket:changed');
+    this.countAmount();
     this.countFullPrice();
   }
 
-  deleteItem(itemId: string, payload: Function | null) {
-    this.itemsList = this.itemsList.filter((x) => x.id !== itemId);
+  deleteItem(itemId: string) {
+    this.basketItemsList = this.basketItemsList.filter((item) => item.id !== itemId);
     this.events.emit('basket:changed');
+    this.countAmount();
+    //todo minus item price
     this.countFullPrice();
+  }
+
+  countAmount() {
+    return this.basketItemsList.length;
   }
 
   countFullPrice(){
-    return this.itemsList.length;
+    this.basketItemsList.forEach((item) => this.fullPrice += item.price);
+    return this.fullPrice;
   }
 
   isPossibleToBuy(item: IItem){
-    return !this.itemsList.includes(item);
+    item.isBought = this.basketItemsList.includes(item)
+    return !item.isBought;
   }
 
   clearBasket(){
-    this.itemsList = [];
+    this.basketItemsList = [];
+    this.fullPrice = 0;
     this.events.emit('basket:changed');
-    this.countFullPrice();
+    this.countAmount();
   }
 }
