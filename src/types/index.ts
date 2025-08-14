@@ -17,9 +17,9 @@ export interface IGallery {
 }
 
 export interface ICustomerModel {
-  setCustomerInfo(customerData: ICustomer): void; // not in doc
+  setCustomerInfo(customerData: ICustomer): void;
   // checkCustomerValidation(data: Record<keyof TPaymentModal, string>): boolean;
-  checkCustomerValidation(fieldName: string): boolean;
+  checkCustomerValidation(fieldName: string): boolean; // not in doc
 }
 
 export interface ICustomer {
@@ -29,14 +29,20 @@ export interface ICustomer {
   phone: string;
 }
 
-export interface IBasket {
+export interface IBasketModel {
   getBasket(): IItem[];
+  setBasket(asketItems: IItem[]): void;
   addItem(item: IItem): void;
-  deleteItem(itemId: string): void; // not in doc
+  deleteItem(itemId: string): void; 
   countAmount(): number;
   countFullPrice(): number;
   isPossibleToBuy(item: IItem): boolean;
   clearBasket(): void;
+}
+
+export interface IBasket {
+  basketItemsList: IItem[];
+  fullPrice: number;
 }
 
 export interface IOrderResponse {

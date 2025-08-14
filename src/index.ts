@@ -124,7 +124,7 @@ const testItemsInBasket = [
 		title: 'UI/UX-карандаш',
 		category: 'хард-скил',
 		price: 10000,
-        isBought: true
+    isBought: true
 	},
 	{
 		id: '90973ae5-285c-4b6f-a6d0-65d1d760b102',
@@ -133,16 +133,19 @@ const testItemsInBasket = [
 		title: 'Бэкенд-антистресс',
 		category: 'другое',
 		price: 1000,
-        isBought: true
+    isBought: true
 	},
 ];
 const testBasket = new BasketModel(testEvents);
 
+testBasket.setBasket(testItemsInBasket);
+console.log(testBasket);
 testBasket.addItem(testItemsInBasket[0]);
-testBasket.getBasket;
+console.log(testBasket.getBasket());
 console.log(testBasket);
 testBasket.addItem(testItemsInBasket[1]);
 console.log(testBasket);
+console.log(`amount ${testBasket.countAmount()}`)
 testBasket.deleteItem('90973ae5-285c-4b6f-a6d0-65d1d760b102');
 console.log(testBasket);
 testBasket.clearBasket();

@@ -1,10 +1,9 @@
 import { IEvents } from './base/events';
-import { IBasket, IItem } from '../types';
+import { IBasket, IItem, IBasketModel } from '../types';
 
-//todo create tests
-export class BasketModel implements IBasket {
+export class BasketModel implements IBasketModel {
   protected basketItemsList: IItem[] = [];
-  protected fullPrice: number = 0;
+  protected fullPrice: number;
   protected events: IEvents;
 
   constructor(events: IEvents) {
@@ -13,6 +12,13 @@ export class BasketModel implements IBasket {
 
   getBasket() {
     return this.basketItemsList;
+  }
+
+  setBasket(basketItems: IItem[]) {
+    this.basketItemsList = basketItems;
+    this.events.emit('basket:changed');
+    this.countAmount();
+    this.countFullPrice();
   }
 
   addItem(item: IItem) {
@@ -26,7 +32,6 @@ export class BasketModel implements IBasket {
     this.basketItemsList = this.basketItemsList.filter((item) => item.id !== itemId);
     this.events.emit('basket:changed');
     this.countAmount();
-    //todo minus item price
     this.countFullPrice();
   }
 
@@ -35,6 +40,7 @@ export class BasketModel implements IBasket {
   }
 
   countFullPrice(){
+    this.fullPrice = 0;
     this.basketItemsList.forEach((item) => this.fullPrice += item.price);
     return this.fullPrice;
   }
@@ -48,6 +54,5 @@ export class BasketModel implements IBasket {
     this.basketItemsList = [];
     this.fullPrice = 0;
     this.events.emit('basket:changed');
-    this.countAmount();
   }
 }
