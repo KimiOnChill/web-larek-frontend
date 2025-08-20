@@ -1,5 +1,5 @@
-import { IEvents } from './base/events';
-import { IGallery, IItem } from '../types';
+import { IEvents } from '../base/events';
+import { IGallery, IItem } from '../../types';
 
 export class GalleryModel implements IGallery {
 	protected preview: string | null = null;
@@ -23,7 +23,7 @@ export class GalleryModel implements IGallery {
 		this.events.emit('item:selected', item);
 	}
 
-	// получение массива товаров с сервера
+	// получение массива товаров, сохраненного в поле класса
 	getItemList() {
     return this.itemsArr;
   }

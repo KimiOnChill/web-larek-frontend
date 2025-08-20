@@ -1,5 +1,5 @@
-import { IEvents } from './base/events';
-import { IBasket, IItem, IBasketModel } from '../types';
+import { IEvents } from '../base/events';
+import { IBasket, IItem, IBasketModel } from '../../types';
 
 export class BasketModel implements IBasketModel {
   protected basketItemsList: IItem[] = [];

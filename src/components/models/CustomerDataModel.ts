@@ -1,4 +1,4 @@
-import { ICustomerModel, ICustomer } from '../types';
+import { ICustomerModel, ICustomer } from '../../types';
 
 export class CustomerDataModel implements ICustomerModel {
   protected paymentMethod: string | null;

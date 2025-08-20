@@ -45,10 +45,18 @@ export interface IBasket {
   fullPrice: number;
 }
 
-export interface IOrderResponse {
+// Ответ с сервера о созданном заказе
+export interface IOrderServer {
   id: string;
   total: number;
 }
+
+// Оформленный заказ для сервера
+export interface IOrder extends ICustomer {
+	total: number;
+	items: string[]; // id array
+}
+
 
 // !View Types
 export type TGallery = Partial<IGallery>; 
@@ -59,3 +67,11 @@ export type TGallery = Partial<IGallery>;
 export type TPaymentModal = Partial<ICustomer>;
 // export type TCustomerInfoModal = Pick<ICustomer, 'email' | 'phone'>;
 // export type TSuccessModal = Pick<IBasket, 'fullPrice'>;
+
+// наследование класса api
+export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
+export interface IApi {
+  getOneProduct(id: string): Promise<IItem>;
+  getProductList(): Promise<IItem[]>;
+  addOrder(order: IOrder): Promise<IOrderServer>
+}

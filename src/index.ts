@@ -1,8 +1,12 @@
 import './scss/styles.scss';
 import { EventEmitter } from './components/base/events';
-import { GalleryModel } from './components/GalleryModel';
-import { CustomerDataModel } from './components/CustomerDataModel';
-import { BasketModel } from './components/BasketModel';
+import { GalleryModel } from './components/models/GalleryModel';
+import { CustomerDataModel } from './components/models/CustomerDataModel';
+import { BasketModel } from './components/models/BasketModel';
+import { API_URL, CDN_URL } from './utils/constants';
+import { AppApi } from './components/AppApi';
+import { IOrder } from './types';
+
 
 // galleryModel test
 const test = [
@@ -150,3 +154,42 @@ testBasket.deleteItem('90973ae5-285c-4b6f-a6d0-65d1d760b102');
 console.log(testBasket);
 testBasket.clearBasket();
 console.log(testBasket);
+
+// check api
+const api = new AppApi(CDN_URL, API_URL);
+
+api.getProductList()
+	.then((initialCards) => {
+		testGallery.setItemList(initialCards);
+		console.log(testGallery.getItemList());
+		console.log(testGallery);
+		//! events.emit('initialData:loaded');
+	})
+	.catch((err) => {
+		console.error(err);
+	});
+
+api.getOneProduct('412bcf81-7e75-4e70-bdb9-d3c73c9803b7')
+	.then((card) => {
+		console.log(card);
+	})
+	.catch((err) => {
+		console.error(err);
+	});
+
+const testOrder: IOrder = {
+	total: 2,
+	items: ['412bcf81-7e75-4e70-bdb9-d3c73c9803b7', '90973ae5-285c-4b6f-a6d0-65d1d760b102'],
+	paymentMethod: 'card',
+	address: 'af',
+	email: '@ex',
+	phone: '69'
+};
+
+api.addOrder(testOrder)
+.then((order) => {
+		console.log(order);
+	})
+	.catch((err) => {
+		console.error(err);
+	});
