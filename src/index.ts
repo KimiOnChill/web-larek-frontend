@@ -6,6 +6,8 @@ import { BasketModel } from './components/models/BasketModel';
 import { API_URL, CDN_URL } from './utils/constants';
 import { AppApi } from './components/AppApi';
 import { IOrder } from './types';
+import { Card } from "./components/view/CardView";
+import { cloneTemplate } from "./utils/utils";
 
 
 // galleryModel test
@@ -193,3 +195,16 @@ api.addOrder(testOrder)
 	.catch((err) => {
 		console.error(err);
 	});
+
+// check cardView
+const cardTemplate = document.querySelector('#card-catalog') as HTMLTemplateElement;
+const galleryElement = document.querySelector('.gallery') as HTMLElement;
+const testCard = new Card(cloneTemplate(cardTemplate));
+const testObj = {
+	category: 'хард-скил',
+	title: 'UI/UX-карандаш',
+	image: 'https://larek-api.nomoreparties.co/content/weblarek/Leaf.svg',
+	price: 10000
+}
+
+galleryElement.append(testCard.render(testObj));
