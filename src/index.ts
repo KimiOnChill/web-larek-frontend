@@ -6,8 +6,11 @@ import { BasketModel } from './components/models/BasketModel';
 import { API_URL, CDN_URL } from './utils/constants';
 import { AppApi } from './components/AppApi';
 import { IOrder } from './types';
-import { Card } from "./components/view/CardView";
+import { Card } from "./components/view/CardBase";
 import { cloneTemplate } from "./utils/utils";
+import { CardInGallery } from './components/view/CardInGallery';
+import { CardInModal } from './components/view/CardInModal';
+import { CardInBasket } from './components/view/CardInBasket';
 
 
 // galleryModel test
@@ -196,15 +199,36 @@ api.addOrder(testOrder)
 		console.error(err);
 	});
 
-// check cardView
-const cardTemplate = document.querySelector('#card-catalog') as HTMLTemplateElement;
-const galleryElement = document.querySelector('.gallery') as HTMLElement;
-const testCard = new Card(cloneTemplate(cardTemplate));
-const testObj = {
-	category: 'хард-скил',
-	title: 'UI/UX-карандаш',
-	image: 'https://larek-api.nomoreparties.co/content/weblarek/Leaf.svg',
-	price: 10000
+// check cardGallery
+//todo all cards from server
+const cardTemplate = document.querySelector('#card-catalog') as HTMLTemplateElement;//into Page class
+const galleryElement = document.querySelector('.gallery') as HTMLElement;//into Page class
+const testCard = new CardInGallery(cloneTemplate(cardTemplate));//?into Page class
+const testProduct = {
+	category: "хард-скил",
+	description: "Очень полезный навык для фронтендера. Без шуток.",
+	id: "48e86fc0-ca99-4e13-b164-b98d65928b53",
+	image: "Leaf.svg",
+	price: 10000,
+	title: "UI/UX-карандаш",
+	isBought: false
 }
 
-galleryElement.append(testCard.render(testObj));
+galleryElement.append(testCard.render(testProduct));
+
+// check modal for preview
+const modalElement = document.querySelector('.modal') as HTMLElement;//into Page class
+const previewTemplate = document.querySelector('#card-preview') as HTMLTemplateElement;//into Page class
+const testPreview = new CardInModal(cloneTemplate(previewTemplate));
+const modalContentElement = document.querySelector('.modal__content') as HTMLElement;//into Page class
+modalElement.classList.add('modal_active');
+modalContentElement.append(testPreview.render(testProduct));
+
+// todo check card in basket
+// !need BasketView
+// const basketTemplate = document.querySelector('#basket') as HTMLTemplateElement;//into Page class
+// const basketListElement = document.querySelector('.basket__list') as HTMLElement;//into Page class
+// const basketItemTemplate = document.querySelector('#card-basket') as HTMLTemplateElement;//into Page class
+// const testBasketCard = new CardInBasket (cloneTemplate(basketItemTemplate));
+// modalContentElement.append(basketTemplate);
+// basketListElement.append(testBasketCard.render(testProduct));

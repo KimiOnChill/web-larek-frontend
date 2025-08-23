@@ -17,4 +17,11 @@
     @include mixins.button(white, $primaryLight, $primaryLight);
     border: $hoverBorder;
   }
+
+  &_unavailable {
+    @include mixins.button(white, $primaryLight, $primaryLight);
+    border: $defaultBorder;
+    cursor: default;
+    color: $unavailable;
+  }
 }

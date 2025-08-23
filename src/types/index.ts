@@ -57,7 +57,6 @@ export interface IOrder extends ICustomer {
 	items: string[]; // id array
 }
 
-
 // !View Types
 export type TGallery = Partial<IGallery>; 
 // export type TCardInfo = Pick<IItem, 'category' | 'title' | 'image' | 'price'>;
