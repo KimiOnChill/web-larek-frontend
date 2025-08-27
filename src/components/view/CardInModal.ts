@@ -4,17 +4,22 @@
 // ! figure out about the inf price bitch
 
 import { ensureElement } from '../../utils/utils';
+import { EventEmitter } from '../base/events';
 import { CardInGallery } from './CardInGallery';
 
 export class CardInModal extends CardInGallery {
   protected cardDescription: HTMLElement;
   protected cardBuyButton: HTMLButtonElement;
 
-  constructor(container: HTMLElement) {
-    super(container);
+  constructor(container: HTMLElement, protected events: EventEmitter) {
+    super(container, events);
 
     this.cardDescription = ensureElement<HTMLElement>('.card__text', this.container);
     this.cardBuyButton = ensureElement<HTMLButtonElement>('.card__button', this.container);
+
+    this.cardBuyButton.addEventListener('click', () =>
+      this.events.emit('basket:changed', {id: this.id})
+    )
   }
 
   set description(value: string) {

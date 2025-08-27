@@ -1,8 +1,9 @@
 // класс для отображения карточки товара в каталоге
 // template is id = card-catalog
-// дополняет класс CardBase свойствами image, category
+// дополняет класс CardBase свойствами image, category и кнопкой открытия карточки в preview
 
 import { ensureElement } from '../../utils/utils';
+import { EventEmitter } from '../base/events';
 import { Card } from './CardBase';
 
 export class CardInGallery extends Card {
@@ -10,13 +11,17 @@ export class CardInGallery extends Card {
   protected cardImage: HTMLImageElement;
   protected cardButton: HTMLButtonElement;
 
-  constructor(container: HTMLElement) {
-    super(container);
+  constructor(container: HTMLElement, protected events: EventEmitter) {
+    super(container, events);
 
-    this.cardButton = ensureElement<HTMLButtonElement>('.gallery__item', this.container);
+    //because whole button wraps card
+    this.cardButton = this.container as HTMLButtonElement;
     this.cardCategory = ensureElement<HTMLElement>('.card__category', this.container);
     this.cardImage = ensureElement<HTMLImageElement>('.card__image', this.container);
 
+    this.cardButton.addEventListener('click', () =>
+      this.events.emit('item:select', {id: this.id})
+    )
   }
 
   set category(value: string) {
@@ -40,8 +45,9 @@ export class CardInGallery extends Card {
     }
   }
 
+  // //todo take title from data, and mb whole image works from api as well 
   set image (src: string) {
-    const imageLink: string = `https://larek-api.nomoreparties.co/content/weblarek/${src.replace('/', '')}` 
-    this.setImage(this.cardImage, imageLink, `Изображение товара ${this.title}`);
+    // const imageLink: string = `https://larek-api.nomoreparties.co/content/weblarek/${src.replace('/', '')}` 
+    this.setImage(this.cardImage, src, `Изображение товара ${this.title}`);
   }
 }

@@ -16,6 +16,13 @@ export interface IGallery {
   setItemList(itemList: IItem[]): void;
 }
 
+export interface IModal {
+  content: HTMLElement;
+  open(): void;
+  close(): void;
+  renderModal(data: HTMLElement): HTMLElement;//?
+}
+
 export interface ICustomerModel {
   setCustomerInfo(customerData: ICustomer): void;
   // checkCustomerValidation(data: Record<keyof TPaymentModal, string>): boolean;

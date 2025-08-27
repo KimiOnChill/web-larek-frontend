@@ -31,6 +31,6 @@ export class GalleryModel implements IGallery {
 	// сохранение массива товаров
 	setItemList(itemList: IItem[]) {
 		this.itemsArr = itemList;
-    this.events.emit('items:changed', itemList)
+    this.events.emit('items:changed');
 	}
 }
