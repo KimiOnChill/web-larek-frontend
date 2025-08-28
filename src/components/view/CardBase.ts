@@ -22,12 +22,12 @@ export class Card extends Component<IItem> {
     this.setText(this.cardTitle, value);
   }
 
-  get title(): string {
-    return this.cardTitle.textContent || '';
-  }
-
   set price(value: string) {
-    this.setText(this.cardPrice, `${value} синапсов`);
+    if (!value) {
+      this.setText(this.cardPrice, 'Бесценно');
+    } else {
+      this.setText(this.cardPrice, `${value} синапсов`);
+    }
   }
 
   //todo take id from data

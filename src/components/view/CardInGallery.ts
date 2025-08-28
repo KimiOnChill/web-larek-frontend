@@ -28,26 +28,25 @@ export class CardInGallery extends Card {
     this.setText(this.cardCategory, value);
     switch (value){
       case "софт-скил":
-        this.cardCategory.classList.add('card__category_soft')
+        this.cardCategory.classList.add('card__category_soft');
         break;
       case "хард-скил":
-        this.cardCategory.classList.add('card__category_hard')
+        this.cardCategory.classList.add('card__category_hard');
         break;
       case "другое":
-        this.cardCategory.classList.add('card__category_other')
+        this.cardCategory.classList.add('card__category_other');
         break;
       case "дополнительное":
-        this.cardCategory.classList.add('card__category_additional')
+        this.cardCategory.classList.add('card__category_additional');
         break;
       case "кнопка":
-        this.cardCategory.classList.add('card__category_button')
+        this.cardCategory.classList.add('card__category_button');
         break;
     }
   }
 
-  // //todo take title from data, and mb whole image works from api as well 
-  set image (src: string) {
-    // const imageLink: string = `https://larek-api.nomoreparties.co/content/weblarek/${src.replace('/', '')}` 
-    this.setImage(this.cardImage, src, `Изображение товара ${this.title}`);
+  //todo take title from data, 
+  set image (src: string) { 
+    this.setImage(this.cardImage, src, 'Изображение товара');
   }
 }
