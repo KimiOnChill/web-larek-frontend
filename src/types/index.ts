@@ -16,6 +16,12 @@ export interface IGallery {
   setItemList(itemList: IItem[]): void;
 }
 
+export interface IPage {
+  counter: number;
+  catalog: HTMLElement[];
+  locked: boolean;
+}
+
 export interface IModal {
   content: HTMLElement;
   open(): void;

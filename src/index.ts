@@ -12,11 +12,13 @@ import { CardInGallery } from './components/view/CardInGallery';
 import { CardInModal } from './components/view/CardInModal';
 import { CardInBasket } from './components/view/CardInBasket';
 import { Modal } from './components/view/Modal';
+import { Page } from './components/view/Page';
 
 const events = new EventEmitter();
+const page = new Page(document.querySelector('.page'), events);
 const gallery = new GalleryModel(events);
-const cardTemplate = document.querySelector('#card-catalog') as HTMLTemplateElement;//? into Page class
-
+const basketModel = new BasketModel(events);
+const cardTemplate = document.querySelector('#card-catalog') as HTMLTemplateElement;
 const api = new AppApi(CDN_URL, API_URL);
 
 api.getProductList()
@@ -29,17 +31,14 @@ api.getProductList()
 });
 
 events.on('items:changed', () => {
-	const galleryElement = document.querySelector('.gallery') as HTMLElement;//? mbinto Page class
 	const itemsHTMLArray = gallery.getItemList().map(
-		item => galleryElement.append(
-				new CardInGallery(cloneTemplate(cardTemplate), events).render(item)
-			)
-		);
+		item => new CardInGallery(cloneTemplate(cardTemplate), events).render(item)
+	);
 	
-	//page.render({
-	// itemsList: itemsHTMLArray,
-	// counter: counter
-	// })
+	page.render({
+		catalog: itemsHTMLArray,
+		counter: basketModel.countAmount()
+	})
 });
 
 events.on('item:select', ({id}: {id: string}) => {
@@ -69,13 +68,13 @@ events.on('item:selected', (item: IItem) => {
   //   }
 })
 
-// todo when Page class appear Block page scroll
-// events.on('modal:open', () => {
-//     page.locked = true;
-// });
-// events.on('modal:close', () => {
-//     page.locked = false;
-// });
+// Block page scroll
+events.on('modal:open', () => {
+    page.locked = true;
+});
+events.on('modal:close', () => {
+    page.locked = false;
+});
 
 // to test every emmiter
 events.onAll(({ eventName, data }) => {
