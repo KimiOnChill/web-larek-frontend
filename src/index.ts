@@ -14,12 +14,18 @@ import { CardInBasket } from './components/view/CardInBasket';
 import { Modal } from './components/view/Modal';
 import { Page } from './components/view/Page';
 
+//base
 const events = new EventEmitter();
-const page = new Page(document.querySelector('.page'), events);
+const api = new AppApi(CDN_URL, API_URL);
+//Models
 const gallery = new GalleryModel(events);
 const basketModel = new BasketModel(events);
+//View
+const page = new Page(document.querySelector('.page'), events);
+const modal = new Modal(document.querySelector('.modal'), events);
+//Templates
 const cardTemplate = document.querySelector('#card-catalog') as HTMLTemplateElement;
-const api = new AppApi(CDN_URL, API_URL);
+const previewTemplate = document.querySelector('#card-preview') as HTMLTemplateElement;
 
 api.getProductList()
 	.then((initialCards) => {
@@ -48,24 +54,12 @@ events.on('item:select', ({id}: {id: string}) => {
 
 //todo complete this function
 events.on('item:selected', (item: IItem) => {
-
 	const showItem = (item: IItem) => {
-
+		const cardPreview = new CardInModal(cloneTemplate(previewTemplate), events);
+		modal.render({content: cardPreview.render(item)})
 	}
 
-	// if (item) {
-  //       api.getLotItem(item.id)
-  //           .then((result) => {
-  //               item.description = result.description;
-  //               item.history = result.history;
-  //               showItem(item);
-  //           })
-  //           .catch((err) => {
-  //               console.error(err);
-  //           })
-  //   } else {
-  //       modal.close();
-  //   }
+	item ? showItem(item): modal.close();
 })
 
 // Block page scroll
@@ -76,7 +70,7 @@ events.on('modal:close', () => {
     page.locked = false;
 });
 
-// to test every emmiter
+// To show every emmiter
 events.onAll(({ eventName, data }) => {
   console.log(eventName, data);
 	//console.log(gallery);

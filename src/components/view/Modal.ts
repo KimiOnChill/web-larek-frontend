@@ -2,12 +2,12 @@
 // в полях содержимое передаваемого через темплейт контента и кнопка закрытия
 // описаны методы открытия и закрытия
 
-import { IModal } from "../../types";
+import { IModal, IModalView } from "../../types";
 import { ensureElement } from "../../utils/utils";
 import { EventEmitter } from "../base/events";
 import { Component } from "../component";
 
-export class Modal extends Component<IModal> {
+export class Modal extends Component<IModalView> implements IModal {
   protected modalContent: HTMLElement;
   protected closeButton: HTMLButtonElement;
 
@@ -17,10 +17,12 @@ export class Modal extends Component<IModal> {
     this.modalContent = ensureElement<HTMLElement>('.modal__content', this.container);
     this.closeButton = ensureElement<HTMLButtonElement>('.modal__close', this.container);
 
-    this.closeButton.addEventListener('click', () =>
-      this.events.emit('modal:close')
-    )
-//! took from mesto
+    this.modalContent.addEventListener('click', (event) => event.stopPropagation());
+
+    this.closeButton.addEventListener('click', () => {
+      this.close();
+    })
+
     this.container.addEventListener("mousedown", (evt) => {
         if (evt.target === evt.currentTarget) {
           this.close();
@@ -29,18 +31,21 @@ export class Modal extends Component<IModal> {
       this.handleEscUp = this.handleEscUp.bind(this);
   }
 
-  set content (element: HTMLElement) {
-    this.content.append(element);
+  set content(value: HTMLElement) {
+    this.modalContent.replaceChildren(value);
   }
 
   open() {
     this.container.classList.add('modal_active');
     document.addEventListener('keydown', this.handleEscUp);
+    this.events.emit('modal:open');
   }
 
   close() {
     this.container.classList.remove('modal_active');
     document.removeEventListener("keydown", this.handleEscUp);
+    //this.container.removeChild(this.modalContent);
+    this.events.emit('modal:close');
   }
 
   handleEscUp (evt: KeyboardEvent) {
@@ -49,13 +54,9 @@ export class Modal extends Component<IModal> {
     }
   }
 
-  renderModal(data: HTMLElement) {}
+  render(data: IModalView): HTMLElement {
+    super.render(data);
+		this.open();
+		return this.container;
+  }
 }
-
-// //previous modal check in index.ts
-// const modalElement = document.querySelector('.modal') as HTMLElement;//into Page class
-// const previewTemplate = document.querySelector('#card-preview') as HTMLTemplateElement;//into Page class
-// const testPreview = new CardInModal(cloneTemplate(previewTemplate), events);
-// const modalContentElement = document.querySelector('.modal__content') as HTMLElement;//into Page class
-// modalElement.classList.add('modal_active');
-// modalContentElement.append(testPreview.render(testProduct));

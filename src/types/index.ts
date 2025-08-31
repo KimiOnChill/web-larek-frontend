@@ -22,11 +22,15 @@ export interface IPage {
   locked: boolean;
 }
 
+export interface IModalView {
+	content: HTMLElement;
+}
 export interface IModal {
-  content: HTMLElement;
-  open(): void;
-  close(): void;
-  renderModal(data: HTMLElement): HTMLElement;//?
+	content: HTMLElement;
+	open(): void;
+	close(): void;
+	render(data: IModalView): HTMLElement;
+  handleEscUp (evt: KeyboardEvent): void
 }
 
 export interface ICustomerModel {

@@ -14,7 +14,6 @@ export class CardInGallery extends Card {
   constructor(container: HTMLElement, protected events: EventEmitter) {
     super(container, events);
 
-    //because whole button wraps card
     this.cardButton = this.container as HTMLButtonElement;
     this.cardCategory = ensureElement<HTMLElement>('.card__category', this.container);
     this.cardImage = ensureElement<HTMLImageElement>('.card__image', this.container);
