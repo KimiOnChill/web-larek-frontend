@@ -7,6 +7,7 @@ export interface IItem {
   image: string;
   price: number | null;
   description: string;
+  button: boolean;
   isBought?: boolean;
 }
 
@@ -47,19 +48,20 @@ export interface ICustomer {
 }
 
 export interface IBasketModel {
-  getBasket(): IItem[];
-  setBasket(asketItems: IItem[]): void;
-  addItem(item: IItem): void;
-  deleteItem(itemId: string): void; 
+  getBasket(): string[];
+  setBasket(asketItems: string[]): void;
+  addItem(id: string): void;
+  deleteItem(id: string): void; 
   countAmount(): number;
   countFullPrice(): number;
-  isPossibleToBuy(item: IItem): boolean;
+  includesItem(id: string): boolean;
   clearBasket(): void;
 }
 
 export interface IBasket {
   basketItemsList: IItem[];
   fullPrice: number;
+  selected: string[];
 }
 
 // Ответ с сервера о созданном заказе

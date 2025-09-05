@@ -2,8 +2,8 @@ import { IEvents } from '../base/events';
 import { IBasket, IItem, IBasketModel } from '../../types';
 
 export class BasketModel implements IBasketModel {
-  protected basketItemsList: IItem[] = [];
-  protected fullPrice: number;
+  protected basketItemsList: string[] = []; //array of ids
+  protected fullPrice: number; //? mb remove
   protected events: IEvents;
 
   constructor(events: IEvents) {
@@ -14,22 +14,22 @@ export class BasketModel implements IBasketModel {
     return this.basketItemsList;
   }
 
-  setBasket(basketItems: IItem[]) {
+  setBasket(basketItems: string[]) {
     this.basketItemsList = basketItems;
     this.events.emit('basket:changed');
     this.countAmount();
     this.countFullPrice();
   }
 
-  addItem(item: IItem) {
-    this.basketItemsList.push(item);
+  addItem(id: string) {
+    this.basketItemsList.push(id);
     this.events.emit('basket:changed');
     this.countAmount();
     this.countFullPrice();
   }
 
-  deleteItem(itemId: string) {
-    this.basketItemsList = this.basketItemsList.filter((item) => item.id !== itemId);
+  deleteItem(id: string) {
+    this.basketItemsList = this.basketItemsList.filter((itemId) => itemId !== id);
     this.events.emit('basket:changed');
     this.countAmount();
     this.countFullPrice();
@@ -41,14 +41,13 @@ export class BasketModel implements IBasketModel {
 
   countFullPrice(){
     this.fullPrice = 0;
-    this.basketItemsList.forEach((item) => this.fullPrice += item.price);
+    //! this.basketItemsList.forEach((id) => this.fullPrice += item.price);
     return this.fullPrice;
   }
 
-  isPossibleToBuy(item: IItem){
-    item.isBought = this.basketItemsList.includes(item)
-    return !item.isBought;
-  }
+  includesItem(id: string): boolean {
+		return this.basketItemsList.includes(id);
+	}
 
   clearBasket(){
     this.basketItemsList = [];
