@@ -1,7 +1,7 @@
-// это базовый класс карточки товара. 
+// это базовый класс карточки товара.
 // в нем поля стоимости, названия, id и сеттеры для них
 
-import { IItem } from '../../types';
+import { IItem, IItemActions } from '../../types';
 import { ensureElement } from '../../utils/utils';
 import { EventEmitter } from '../base/events';
 import { Component } from '../component';
@@ -10,37 +10,49 @@ export class Card extends Component<IItem> {
 	protected cardTitle: HTMLElement;
 	protected cardPrice: HTMLElement;
 	protected productId: string;
-  protected cardBuyButton: HTMLButtonElement;
+	protected cardButton: HTMLButtonElement;
 
-	constructor(container: HTMLElement, protected events: EventEmitter) {
+	constructor(
+		container: HTMLElement,
+		protected events: EventEmitter,
+		actions?: IItemActions
+	) {
 		super(container);
 
 		this.cardTitle = ensureElement<HTMLElement>('.card__title', this.container);
-    this.cardPrice = ensureElement<HTMLElement>('.card__price', this.container);
-    this.cardBuyButton = this.container.querySelector('.card__button');
-    // ensureElement<HTMLButtonElement>('.card__button', this.container);
+		this.cardPrice = ensureElement<HTMLElement>('.card__price', this.container);
+		this.cardButton = this.container.querySelector('.card__button');
+		// ensureElement<HTMLButtonElement>('.card__button', this.container);
+
+		if (actions?.onClick) {
+			if (this.cardButton) {
+				this.cardButton.addEventListener('click', actions.onClick);
+			} else {
+				container.addEventListener('click', actions.onClick);
+			}
+		}
 	}
 
-  set title(value: string) {
-    this.setText(this.cardTitle, value);
-  }
+	set title(value: string) {
+		this.setText(this.cardTitle, value);
+	}
 
-  set price(value: string) {
-    if (!value) {
-      this.setText(this.cardPrice, 'Бесценно');
-			this.setDisabled(this.cardBuyButton, true);
-    } else {
-      this.setText(this.cardPrice, `${value} синапсов`);
-      this.setDisabled(this.cardBuyButton, false);
-    }
-  }
+	set price(value: string) {
+		if (!value) {
+			this.setText(this.cardPrice, 'Бесценно');
+			this.setDisabled(this.cardButton, true);
+		} else {
+			this.setText(this.cardPrice, `${value} синапсов`);
+			this.setDisabled(this.cardButton, false);
+		}
+	}
 
-  //todo take id from data
-  set id(value: string) {
-    this.productId = value;
-  }
+	//todo take id from data
+	set id(value: string) {
+		this.productId = value;
+	}
 
-  get id(): string {
-    return this.productId;
-  }
+	get id(): string {
+		return this.productId;
+	}
 }

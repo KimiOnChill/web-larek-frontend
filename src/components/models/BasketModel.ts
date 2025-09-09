@@ -23,16 +23,18 @@ export class BasketModel implements IBasketModel {
 
   addItem(id: string) {
     this.basketItemsList.push(id);
-    this.events.emit('basket:changed');
-    this.countAmount();
-    this.countFullPrice();
+    this.setBasket(this.basketItemsList);
+    // this.events.emit('basket:changed');
+    // this.countAmount();
+    // this.countFullPrice();
   }
 
   deleteItem(id: string) {
     this.basketItemsList = this.basketItemsList.filter((itemId) => itemId !== id);
-    this.events.emit('basket:changed');
-    this.countAmount();
-    this.countFullPrice();
+    this.setBasket(this.basketItemsList);
+    // this.events.emit('basket:changed');
+    // this.countAmount();
+    // this.countFullPrice();
   }
 
   countAmount() {

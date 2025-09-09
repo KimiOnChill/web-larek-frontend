@@ -13,7 +13,7 @@ export abstract class Component<T> {
     // Переключить класс
     toggleClass(element: HTMLElement, className: string, force?: boolean) {
         element.classList.toggle(className, force);
-    }
+    }//!delete
 
     // Установить текстовое содержимое
     protected setText(element: HTMLElement, value: unknown) {
@@ -33,12 +33,12 @@ export abstract class Component<T> {
     // Скрыть
     protected setHidden(element: HTMLElement) {
         element.style.display = 'none';
-    }
+    }//!delete
 
     // Показать
     protected setVisible(element: HTMLElement) {
         element.style.removeProperty('display');
-    }
+    }//!delete
 
     // Установить изображение с алтернативным текстом
     protected setImage(element: HTMLImageElement, src: string, alt?: string) {

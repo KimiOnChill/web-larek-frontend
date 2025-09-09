@@ -5,7 +5,7 @@ import { CustomerDataModel } from './components/models/CustomerDataModel';
 import { BasketModel } from './components/models/BasketModel';
 import { API_URL, CDN_URL } from './utils/constants';
 import { AppApi } from './components/AppApi';
-import { IItem, IOrder } from './types';
+import { IItem, IItemActions, IOrder } from './types';
 import { Card } from "./components/view/CardBase";
 import { cloneTemplate, createElement } from "./utils/utils";
 import { CardInGallery } from './components/view/CardInGallery';
@@ -37,7 +37,7 @@ const basket = new Basket(cloneTemplate(basketTemplate), events);
 api.getProductList()
 	.then((initialCards) => {
 		gallery.setItemList(initialCards);
-		console.log(gallery);
+		console.log(gallery);// todo remove
 	})
 	.catch((err) => {
 		console.error(err);
@@ -62,7 +62,17 @@ events.on('item:select', ({id}: {id: string}) => {
 //todo complete this function with button action
 events.on('item:selected', (item: IItem) => {
 	const showItem = (item: IItem) => {
-		const cardPreview = new CardInModal(cloneTemplate(previewTemplate), events);
+		const cardPreview = new CardInModal(cloneTemplate(previewTemplate), events, {
+			onClick: () => {//tell basketModel how it changed and change button text
+				if (basketModel.includesItem(item.id)){
+					basketModel.deleteItem(item.id);
+					showItem(item);
+				}else{
+					basketModel.addItem(item.id);
+					showItem(item);
+				}
+			}
+		});
 		modal.render({content: cardPreview.render({
 				id: item.id,
 				title: item.title,
@@ -75,34 +85,35 @@ events.on('item:selected', (item: IItem) => {
 			})})
 	}
 
-	//button action
-
 	item ? showItem(item): modal.close();
 })
 
 // Block page scroll
 events.on('modal:open', () => {
-    page.locked = true;
+  page.locked = true;
 });
 events.on('modal:close', () => {
-    page.locked = false;
+  page.locked = false;
 });
 
 events.on('basket:open', () => {
   modal.render({
-		//mb only basket.render()
   	content: createElement<HTMLElement>('div', {}, [
       basket.render()
       ])
-    })
+  });
 });
 
 events.on('basket:changed', () => {
-    
+  //update counter by BasketModel
+	//get items from BasketModel into view
+	//add counting numbers
+	//count total 
 });
 
 // To show every emmiter
 events.onAll(({ eventName, data }) => {
   console.log(eventName, data);
-	//console.log(gallery);
+	// console.log(gallery);
+	console.log(basketModel);
 });

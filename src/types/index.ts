@@ -11,6 +11,10 @@ export interface IItem {
   isBought?: boolean;
 }
 
+export interface IItemActions {
+  onClick: (event: MouseEvent) => void;
+}
+
 export interface IGallery {
   getItem(itemId: string): IItem;
   getItemList(): IItem[];
@@ -31,7 +35,7 @@ export interface IModal {
 	open(): void;
 	close(): void;
 	render(data: IModalView): HTMLElement;
-  handleEscUp (evt: KeyboardEvent): void
+  handleEscUp (evt: KeyboardEvent): void;
 }
 
 export interface ICustomerModel {

@@ -15,8 +15,7 @@ export class Basket extends Component<IBasket> {
 
 		this.basketItemsList = this.container.querySelector('.basket__list');
 		this.fullPrice = this.container.querySelector('.basket__price');
-		this.createOrderButton =
-			this.container.querySelector('.basket__button');
+		this.createOrderButton = this.container.querySelector('.basket__button');
 
 		if (this.createOrderButton) {
 			this.createOrderButton.addEventListener('click', () => {
@@ -30,6 +29,7 @@ export class Basket extends Component<IBasket> {
 	set items(items: HTMLElement[]) {
 		if (items.length) {
 			this.basketItemsList.replaceChildren(...items);
+			this.setDisabled(this.createOrderButton, false);
 		} else {
 			this.basketItemsList.replaceChildren(
 				createElement<HTMLParagraphElement>('p', {
@@ -41,16 +41,7 @@ export class Basket extends Component<IBasket> {
 		}
 	}
 
-	//?mb not
-	set selected(items: string[]) {
-		if (items.length) {
-			this.setDisabled(this.createOrderButton, false);
-		} else {
-			this.setDisabled(this.createOrderButton, true);
-		}
-	}
-
 	set total(total: number) {
-		this.setText(this.fullPrice, total);
+		this.setText(this.fullPrice, `${total} синапсов`);
 	}
 }
