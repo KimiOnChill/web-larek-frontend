@@ -18,33 +18,20 @@ export class BasketModel implements IBasketModel {
     this.basketItemsList = basketItems;
     this.events.emit('basket:changed');
     this.countAmount();
-    this.countFullPrice();
   }
 
   addItem(id: string) {
     this.basketItemsList.push(id);
     this.setBasket(this.basketItemsList);
-    // this.events.emit('basket:changed');
-    // this.countAmount();
-    // this.countFullPrice();
   }
 
   deleteItem(id: string) {
     this.basketItemsList = this.basketItemsList.filter((itemId) => itemId !== id);
     this.setBasket(this.basketItemsList);
-    // this.events.emit('basket:changed');
-    // this.countAmount();
-    // this.countFullPrice();
   }
 
   countAmount() {
     return this.basketItemsList.length;
-  }
-
-  countFullPrice(){
-    this.fullPrice = 0;
-    //! this.basketItemsList.forEach((id) => this.fullPrice += item.price);
-    return this.fullPrice;
   }
 
   includesItem(id: string): boolean {

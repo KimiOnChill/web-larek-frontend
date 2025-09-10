@@ -16,21 +16,21 @@ export class CardInBasket extends Card {
 		protected events: EventEmitter,
 		actions?: IItemActions
 	) {
-		super(container, events);
+		super(container, events, actions);
 
-		//this.cardDeleteButton = ensureElement<HTMLButtonElement>('.basket__item-delete', this.container);
 		this.cardNum = ensureElement<HTMLElement>(
 			'.basket__item-index',
 			this.container
 		);
+		this.cardDeleteButton = this.container.querySelector('.basket__item-delete');
 
-		// this.cardDeleteButton.addEventListener('click', () =>
-		//   this.events.emit('basket:changed', {id: this.id})
-		// )
+		if (actions?.onClick) {
+			this.cardDeleteButton.addEventListener('click', actions.onClick);
+		}
 	}
 
 	//todo review it
-	set number(value: string) {
+	set number(value: number) {
 		this.setText(this.cardNum, value);
 	}
 }

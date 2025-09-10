@@ -22,14 +22,9 @@ export class Card extends Component<IItem> {
 		this.cardTitle = ensureElement<HTMLElement>('.card__title', this.container);
 		this.cardPrice = ensureElement<HTMLElement>('.card__price', this.container);
 		this.cardButton = this.container.querySelector('.card__button');
-		// ensureElement<HTMLButtonElement>('.card__button', this.container);
 
 		if (actions?.onClick) {
-			if (this.cardButton) {
-				this.cardButton.addEventListener('click', actions.onClick);
-			} else {
-				container.addEventListener('click', actions.onClick);
-			}
+			this.cardButton.addEventListener('click', actions.onClick);
 		}
 	}
 

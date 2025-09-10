@@ -28,7 +28,7 @@ export class CardInGallery extends Card {
 			'.card__image',
 			this.container
 		);
-
+		
 		this.cardSelectButton.addEventListener('click', () =>
 			this.events.emit('item:select', { id: this.id })
 		);

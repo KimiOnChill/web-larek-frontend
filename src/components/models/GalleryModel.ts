@@ -10,15 +10,13 @@ export class GalleryModel implements IGallery {
 		this.events = events;
 	}
 
-	// получение карточки по ее id для preview
+	// получение карточки по ее id
 	getItem(itemId: string) {
-		const itemMatch = this.itemsArr.find((item) => item.id === itemId);
-		this.setItem(itemMatch)
-		return itemMatch;
+		return this.itemsArr.find((item) => item.id === itemId);
 	}
 
 	// сохранение карточки по ее id в preview
-	protected setItem(item: IItem) {
+	setItem(item: IItem) {
 		this.preview = item.id;
 		this.events.emit('item:selected', item);
 	}

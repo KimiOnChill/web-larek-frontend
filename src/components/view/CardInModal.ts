@@ -22,10 +22,6 @@ export class CardInModal extends CardInGallery {
 			'.card__text',
 			this.container
 		);
-
-		// this.cardButton.addEventListener('click', () =>
-		//   this.events.emit('basket:changed', {id: this.id})
-		// )
 	}
 
 	set description(value: string) {

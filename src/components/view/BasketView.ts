@@ -29,6 +29,7 @@ export class Basket extends Component<IBasket> {
 	set items(items: HTMLElement[]) {
 		if (items.length) {
 			this.basketItemsList.replaceChildren(...items);
+			this.basketItemsList.style.opacity = '1';
 			this.setDisabled(this.createOrderButton, false);
 		} else {
 			this.basketItemsList.replaceChildren(

@@ -57,7 +57,6 @@ export interface IBasketModel {
   addItem(id: string): void;
   deleteItem(id: string): void; 
   countAmount(): number;
-  countFullPrice(): number;
   includesItem(id: string): boolean;
   clearBasket(): void;
 }
