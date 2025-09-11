@@ -1,7 +1,6 @@
 // класс для отображения карточки в модальном окне
 // template is id = card-preview
 // дополняет класс CardBase свойствами description и кнопкой покупки
-// ! figure out about the inf price bitch
 
 import { IItemActions } from '../../types';
 import { ensureElement } from '../../utils/utils';

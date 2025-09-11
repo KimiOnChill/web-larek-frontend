@@ -19,7 +19,7 @@ export class Basket extends Component<IBasket> {
 
 		if (this.createOrderButton) {
 			this.createOrderButton.addEventListener('click', () => {
-				events.emit('order:open'); //! check event
+				events.emit('order:open'); 
 			});
 		}
 

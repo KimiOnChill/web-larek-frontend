@@ -14,12 +14,15 @@ import { CardInBasket } from './components/view/CardInBasket';
 import { Modal } from './components/view/Modal';
 import { Page } from './components/view/Page';
 import { Basket } from './components/view/BasketView';
+import { FormOrder } from './components/view/FormOrder';
 
 //Templates
 const cardTemplate = document.querySelector('#card-catalog') as HTMLTemplateElement;
 const previewTemplate = document.querySelector('#card-preview') as HTMLTemplateElement;
 const cardInBasketTemplate = document.querySelector('#card-basket') as HTMLTemplateElement;
 const basketTemplate = document.querySelector('#basket') as HTMLTemplateElement;
+const formOrderTemplate = document.querySelector('#order') as HTMLTemplateElement;
+const formContactsTemplate = document.querySelector('#contacts') as HTMLTemplateElement;
 
 //Base
 const events = new EventEmitter();
@@ -119,6 +122,18 @@ events.on('basket:changed', () => {
 	page.render({
 		counter: basketModel.countAmount()
 	})
+});
+
+events.on('order:open', () => {
+	const formOrder = new FormOrder(cloneTemplate(formOrderTemplate), events);
+  modal.render({
+  	content: formOrder.render({
+      paymentMethod: null,
+			address: '',
+			valid: false,
+			errors: [],
+		})
+  });
 });
 
 // To show every emmiter

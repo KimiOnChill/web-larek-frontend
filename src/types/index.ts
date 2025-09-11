@@ -38,19 +38,6 @@ export interface IModal {
   handleEscUp (evt: KeyboardEvent): void;
 }
 
-export interface ICustomerModel {
-  setCustomerInfo(customerData: ICustomer): void;
-  // checkCustomerValidation(data: Record<keyof TPaymentModal, string>): boolean;
-  checkCustomerValidation(fieldName: string): boolean; // not in doc
-}
-
-export interface ICustomer {
-  paymentMethod: string | null;
-  address: string;
-  email: string;
-  phone: string;
-}
-
 export interface IBasketModel {
   getBasket(): string[];
   setBasket(asketItems: string[]): void;
@@ -64,7 +51,34 @@ export interface IBasketModel {
 export interface IBasket {
   basketItemsList: IItem[];
   fullPrice: number;
-  selected: string[];
+}
+
+export interface IFormState {
+  valid: boolean;
+  errors: string[];
+}
+
+export interface IFormOrder {
+  paymentMethod: string | null;
+  address: string;
+}
+
+export interface IFormContacts {
+  email: string;
+  phone: string;
+}
+
+export interface ICustomerModel {
+  setCustomerInfo(customerData: ICustomer): void;
+  // checkCustomerValidation(data: Record<keyof TPaymentModal, string>): boolean;
+  checkCustomerValidation(fieldName: string): boolean; // not in doc
+}
+
+export interface ICustomer {
+  paymentMethod: string | null;
+  address: string;
+  email: string;
+  phone: string;
 }
 
 // Ответ с сервера о созданном заказе
@@ -79,7 +93,7 @@ export interface IOrder extends ICustomer {
 	items: string[]; // id array
 }
 
-// !View Types
+// !View Types, mb delete
 export type TGallery = Partial<IGallery>; 
 // export type TCardInfo = Pick<IItem, 'category' | 'title' | 'image' | 'price'>;
 // export type TCounter = Pick<IBasket, 'counter'>;
