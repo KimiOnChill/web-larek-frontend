@@ -34,7 +34,7 @@ const api = new AppApi(CDN_URL, API_URL);
 //Models
 const gallery = new GalleryModel(events);
 const basketModel = new BasketModel(events);
-const CustomerModel = new CustomerDataModel(events);
+const customerModel = new CustomerDataModel(events);
 
 //View
 const page = new Page(document.querySelector('.page'), events);
@@ -140,7 +140,7 @@ events.on('order:open', () => {
 	
   modal.render({
   	content: formOrder.render({
-      paymentMethod: null,
+      payment: null,
 			address: '',
 			valid: false,
 			errors: [],
@@ -150,16 +150,16 @@ events.on('order:open', () => {
 
 // Изменилось поле формы "order"
 events.on(/^order\..*:change/, (data: { field: keyof IFormOrder, value: string }) => {
-  CustomerModel.setOneInfo(data.field, data.value);
+  customerModel.setOneInfo(data.field, data.value);
 });
 
 // Изменилось одно из полей формы "contacts"
 events.on(/^contacts\..*:change/, (data: { field: keyof IFormContacts, value: string }) => {
-  CustomerModel.setOneInfo(data.field, data.value);
+  customerModel.setOneInfo(data.field, data.value);
 });
 
 events.on('payment:change', ({method}: {method: string}) => {
-	CustomerModel.setOneInfo('paymentMethod', method);
+	customerModel.setOneInfo('payment', method);
 });
 
 events.on('contacts:open', () => {
@@ -175,11 +175,11 @@ events.on('contacts:open', () => {
 });
 
 events.on('validation:error', (errors: Partial<IFormOrder & IFormContacts>) => {
-  const { paymentMethod, address, email,  phone} = errors;
+  const { payment, address, email,  phone} = errors;
 
 	//order
-  formOrder.valid = !paymentMethod && !address;
-  formOrder.errors = Object.values({paymentMethod, address}).filter(i => !!i).join('; ');
+  formOrder.valid = !payment && !address;
+  formOrder.errors = Object.values({payment, address}).filter(i => !!i).join('; ');
 	
 	//contacts
 	formContacts.valid = !email && !phone;
@@ -187,16 +187,26 @@ events.on('validation:error', (errors: Partial<IFormOrder & IFormContacts>) => {
 });
 
 events.on('success:open', () => {
-	modal.render({
-		content: success.render({
-			total: 0
+	const order = {
+		...customerModel.getCustomer(),
+		total: basketModel.getBasket().reduce((acc, x) => acc + gallery.getItem(x).price, 0),
+		items: basketModel.getBasket()
+	};
+
+	api.addOrder(order)
+		.then((result)=> {
+			modal.render({content: success.render({})});
+			success.priceTotal = result.total;
+			basketModel.clearBasket();
+			customerModel.orderClear();
 		})
+		.catch((err) => {
+			console.error(err);
 	});
-	success.priceTotal = basketModel.getBasket().reduce((acc, x) => acc + gallery.getItem(x).price, 0);
-})
+});
 
 // To show every emmiter
 events.onAll(({ eventName, data }) => {
   console.log(eventName, data);
-	console.log(CustomerModel);
+	console.log(customerModel);
 });

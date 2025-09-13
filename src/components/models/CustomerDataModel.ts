@@ -9,7 +9,7 @@ import { IEvents } from '../base/events';
 
 export class CustomerDataModel implements ICustomerModel {
 	protected orderEntered: ICustomer = {
-		paymentMethod: null,
+		payment: null,
 		address: '',
 		email: '',
 		phone: '',
@@ -29,9 +29,13 @@ export class CustomerDataModel implements ICustomerModel {
 	//   this.phone = customerData.phone;
 	// }
 
+	getCustomer() {
+		return {...this.orderEntered}
+	}
+
 	setOneInfo(field: keyof ICustomer, value: string) {
 		this.orderEntered[field] = value;
-		if (field === 'paymentMethod' || field === 'address') {
+		if (field === 'payment' || field === 'address') {
 			this.validateOrder();
 			//this.events.emit('order:ready', this.orderEntered);
 		} else {
@@ -43,10 +47,10 @@ export class CustomerDataModel implements ICustomerModel {
 	//todo complete function
 	validateOrder() {
 		const errors: FormErrors = {};
-		const { paymentMethod, address } = this.orderEntered;
+		const { payment, address } = this.orderEntered;
 
-		if (!paymentMethod) {
-			errors.paymentMethod = 'Необходимо указать способ оплаты';
+		if (!payment) {
+			errors.payment = 'Необходимо указать способ оплаты';
 		}
 
 		if (!address || address.trim() === '') {
@@ -81,10 +85,10 @@ export class CustomerDataModel implements ICustomerModel {
 	// проверяет объект с данными покупателя на валидность (пустое поле или нет)
 	checkCustomerValidation(fieldName: keyof ICustomer) {
 		switch (fieldName) {
-			case 'paymentMethod':
+			case 'payment':
 				return (
-					this.orderEntered.paymentMethod !== '' &&
-					this.orderEntered.paymentMethod !== null
+					this.orderEntered.payment !== '' &&
+					this.orderEntered.payment !== null
 				);
 			case 'address':
 				return this.orderEntered.address !== '';
@@ -99,12 +103,11 @@ export class CustomerDataModel implements ICustomerModel {
 
 	orderClear(): void {
 		this.orderEntered = {
-			paymentMethod: null,
+			payment: null,
 			address: '',
 			email: '',
 			phone: '',
 		};
 		this.formErrors = {};
-		this.events.emit('customer:data:cleared');
 	}
 }

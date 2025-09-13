@@ -59,7 +59,7 @@ export interface IFormState {
 }
 
 export interface IFormOrder {
-  paymentMethod: string | null;
+  payment: string | null;
   address: string;
 }
 
@@ -77,7 +77,7 @@ export interface ICustomerModel {
 }
 
 export interface ICustomer {
-  paymentMethod: string | null;
+  payment: string | null;
   address: string;
   email: string;
   phone: string;
