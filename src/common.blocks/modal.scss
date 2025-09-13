@@ -3,7 +3,6 @@
 
 .modal {
   @include mixins.sublayer;
-  // height: max-content;
   position: absolute;
   display: none;
   justify-content: center;
@@ -15,10 +14,6 @@
 
   &_active {
     display: flex;
-    // visibility: visible;
-    // opacity: 1;
-    // pointer-events: all;
-    // transition: visibility 0s, opacity 0.6s;
   }
 
   &__container {
@@ -26,7 +21,6 @@
     @include mixins.flex(column);
     gap: $defaultPadding;
     background-color: $background;
-    // min-height: 90vmin;
     border-radius: 3rem;
     box-sizing: border-box;
     position: relative;

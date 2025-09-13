@@ -55,7 +55,6 @@ export class CardInGallery extends Card {
 		}
 	}
 
-	//todo take title from data,
 	set image(src: string) {
 		this.setImage(this.cardImage, src, 'Изображение товара');
 	}

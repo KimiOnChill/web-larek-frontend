@@ -3,7 +3,7 @@ import { IBasket, IItem, IBasketModel } from '../../types';
 
 export class BasketModel implements IBasketModel {
   protected basketItemsList: string[] = []; //array of ids
-  protected fullPrice: number; //? mb remove
+  protected fullPrice: number;
   protected events: IEvents;
 
   constructor(events: IEvents) {

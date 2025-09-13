@@ -47,5 +47,9 @@ export class FormOrder extends Form<IFormOrder> {
 		});
   }
 
-  // set paymentMethod()
+  resetFormOrder() {
+		this.buttonCash.classList.remove('button_alt-active');
+		this.buttonCard.classList.remove('button_alt-active');
+		this.addressInput.value = '';
+	}
 }

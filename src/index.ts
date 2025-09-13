@@ -5,8 +5,7 @@ import { CustomerDataModel } from './components/models/CustomerDataModel';
 import { BasketModel } from './components/models/BasketModel';
 import { API_URL, CDN_URL } from './utils/constants';
 import { AppApi } from './components/AppApi';
-import { IFormContacts, IFormOrder, IItem, IItemActions, IOrder } from './types';
-import { Card } from "./components/view/CardBase";
+import { IFormContacts, IFormOrder, IItem } from './types';
 import { cloneTemplate, createElement } from "./utils/utils";
 import { CardInGallery } from './components/view/CardInGallery';
 import { CardInModal } from './components/view/CardInModal';
@@ -51,7 +50,6 @@ const formContacts = new FormContacts(cloneTemplate(formContactsTemplate), event
 api.getProductList()
 	.then((initialCards) => {
 		gallery.setItemList(initialCards);
-		console.log(gallery);// todo remove
 	})
 	.catch((err) => {
 		console.error(err);
@@ -109,6 +107,9 @@ events.on('modal:open', () => {
 });
 events.on('modal:close', () => {
   page.locked = false;
+	customerModel.orderClear();
+	formOrder.resetFormOrder();
+	formContacts.resetFormContacts();
 });
 
 events.on('basket:open', () => {
@@ -148,12 +149,10 @@ events.on('order:open', () => {
   });
 });
 
-// Изменилось поле формы "order"
 events.on(/^order\..*:change/, (data: { field: keyof IFormOrder, value: string }) => {
   customerModel.setOneInfo(data.field, data.value);
 });
 
-// Изменилось одно из полей формы "contacts"
 events.on(/^contacts\..*:change/, (data: { field: keyof IFormContacts, value: string }) => {
   customerModel.setOneInfo(data.field, data.value);
 });
@@ -203,10 +202,7 @@ events.on('success:open', () => {
 		.catch((err) => {
 			console.error(err);
 	});
-});
-
-// To show every emmiter
+})// To show every emmiter
 events.onAll(({ eventName, data }) => {
   console.log(eventName, data);
-	console.log(customerModel);
 });

@@ -45,7 +45,6 @@ export class Modal extends Component<IModalView> implements IModal {
   close() {
     this.container.classList.remove('modal_active');
     document.removeEventListener("keydown", this.handleEscUp);
-    //this.container.removeChild(this.modalContent);
     this.events.emit('modal:close');
   }
 

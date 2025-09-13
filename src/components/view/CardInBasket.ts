@@ -29,7 +29,6 @@ export class CardInBasket extends Card {
 		}
 	}
 
-	//todo review it
 	set number(value: number) {
 		this.setText(this.cardNum, value);
 	}

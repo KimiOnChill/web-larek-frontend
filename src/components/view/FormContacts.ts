@@ -24,7 +24,12 @@ export class FormContacts extends Form<IFormContacts> {
 		);
 
     this.submitButton.addEventListener('click', () => {
-			events.emit('success:open');//!check event 
+			events.emit('success:open');
 		});
   }
+
+	resetFormContacts() {
+		this.emailInput.value = '';
+		this.phoneInput.value = '';
+	}
 }

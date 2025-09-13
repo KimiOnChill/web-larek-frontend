@@ -21,14 +21,6 @@ export class CustomerDataModel implements ICustomerModel {
 		this.events = events;
 	}
 
-	// сохраняет данные покупателя в классе
-	// setCustomerInfo(customerData: ICustomer){
-	//   this.paymentMethod = customerData.paymentMethod;
-	//   this.address = customerData.address;
-	//   this.email = customerData.email;
-	//   this.phone = customerData.phone;
-	// }
-
 	getCustomer() {
 		return {...this.orderEntered}
 	}
@@ -37,14 +29,11 @@ export class CustomerDataModel implements ICustomerModel {
 		this.orderEntered[field] = value;
 		if (field === 'payment' || field === 'address') {
 			this.validateOrder();
-			//this.events.emit('order:ready', this.orderEntered);
 		} else {
 			this.validateContacts();
-			//this.events.emit('order:ready', this.orderEntered);
 		}
 	}
 
-	//todo complete function
 	validateOrder() {
 		const errors: FormErrors = {};
 		const { payment, address } = this.orderEntered;
@@ -63,7 +52,6 @@ export class CustomerDataModel implements ICustomerModel {
 		return isValid;
 	}
 
-  //todo complete function
 	validateContacts() {
 		const errors: FormErrors = {};
 		const { email, phone } = this.orderEntered;
@@ -80,25 +68,6 @@ export class CustomerDataModel implements ICustomerModel {
 		this.formErrors = errors;
 		this.events.emit('validation:error', this.formErrors);
 		return isValid;
-	}
-
-	// проверяет объект с данными покупателя на валидность (пустое поле или нет)
-	checkCustomerValidation(fieldName: keyof ICustomer) {
-		switch (fieldName) {
-			case 'payment':
-				return (
-					this.orderEntered.payment !== '' &&
-					this.orderEntered.payment !== null
-				);
-			case 'address':
-				return this.orderEntered.address !== '';
-			case 'email':
-				return this.orderEntered.email !== '';
-			case 'phone':
-				return this.orderEntered.phone !== '';
-			default:
-				return false;
-		}
 	}
 
 	orderClear(): void {

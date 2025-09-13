@@ -42,7 +42,6 @@ export class Card extends Component<IItem> {
 		}
 	}
 
-	//todo take id from data
 	set id(value: string) {
 		this.productId = value;
 	}

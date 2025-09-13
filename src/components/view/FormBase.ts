@@ -31,8 +31,6 @@ export class Form<T> extends Component<IFormState> {
 
 		this.container.addEventListener('submit', (e: Event) => {
 			e.preventDefault();
-			const form = this.container as HTMLFormElement;
-			this.events.emit(`${form.name}:submit`);
 		});
 	}
 

@@ -1,5 +1,3 @@
-// Layer with Data
-// todo update interfaces in doc
 export interface IItem {
   id: string;
   category: string;
@@ -69,11 +67,11 @@ export interface IFormContacts {
 }
 
 export interface ICustomerModel {
+  getCustomer(): void;
   setOneInfo(field: keyof ICustomer, value: string ): void;
-  //setCustomerInfo(customerData: ICustomer): void;
- 
-  // checkCustomerValidation(data: Record<keyof TPaymentModal, string>): boolean;
-  checkCustomerValidation(fieldName: keyof ICustomer): boolean; // not in doc
+  validateOrder(): void;
+  validateContacts(): void;
+  orderClear(): void;
 }
 
 export interface ICustomer {
@@ -100,16 +98,6 @@ export interface IOrderActions {
 }
 
 export type FormErrors = Partial<Record<keyof ICustomer, string>>;
-
-// !View Types, mb delete
-export type TGallery = Partial<IGallery>; 
-// export type TCardInfo = Pick<IItem, 'category' | 'title' | 'image' | 'price'>;
-// export type TCounter = Pick<IBasket, 'counter'>;
-// export type TItemCard = Pick<IItem, 'category' | 'title' | 'image' | 'description'| 'isBought' | 'price'>;
-// export type TBasket = Pick<IBasket, 'itemsList' | 'counter' | 'fullPrice'>;
-export type TPaymentModal = Partial<ICustomer>;
-// export type TCustomerInfoModal = Pick<ICustomer, 'email' | 'phone'>;
-// export type TSuccessModal = Pick<IBasket, 'fullPrice'>;
 
 // наследование класса api
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
