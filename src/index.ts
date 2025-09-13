@@ -5,7 +5,7 @@ import { CustomerDataModel } from './components/models/CustomerDataModel';
 import { BasketModel } from './components/models/BasketModel';
 import { API_URL, CDN_URL } from './utils/constants';
 import { AppApi } from './components/AppApi';
-import { IItem, IItemActions, IOrder } from './types';
+import { IFormContacts, IFormOrder, IItem, IItemActions, IOrder } from './types';
 import { Card } from "./components/view/CardBase";
 import { cloneTemplate, createElement } from "./utils/utils";
 import { CardInGallery } from './components/view/CardInGallery';
@@ -31,6 +31,7 @@ const api = new AppApi(CDN_URL, API_URL);
 //Models
 const gallery = new GalleryModel(events);
 const basketModel = new BasketModel(events);
+const CustomerModel = new CustomerDataModel;
 
 //View
 const page = new Page(document.querySelector('.page'), events);
@@ -136,7 +137,18 @@ events.on('order:open', () => {
   });
 });
 
+// Изменилось одно из полей формы "order"
+events.on(/^order\..*:change/, (data: { field: keyof IFormOrder, value: string }) => {
+  CustomerModel.setOneInfo(data.field, data.value);
+});
+
+// Изменилось одно из полей формы "contacts"
+events.on(/^contacts\..*:change/, (data: { field: keyof IFormContacts, value: string }) => {
+  CustomerModel.setOneInfo(data.field, data.value);
+});
+
 // To show every emmiter
 events.onAll(({ eventName, data }) => {
   console.log(eventName, data);
+	console.log(CustomerModel);
 });

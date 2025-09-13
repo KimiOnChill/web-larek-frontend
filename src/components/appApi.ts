@@ -1,4 +1,4 @@
-import { IApi, IItem, IOrder, IOrderServer } from '../types';
+import { IApi, IItem, IOrder, IServerOrder } from '../types';
 import { Api, ApiListResponse } from './base/api';
 // actions with server:
 // 1) get cards array from it
@@ -29,7 +29,7 @@ export class AppApi extends Api implements IApi {
 		);
 	}
 
-	addOrder(order: IOrder): Promise<IOrderServer> {
-		return this.post('/order', order).then((data: IOrderServer) => data);
+	addOrder(order: IOrder): Promise<IServerOrder> {
+		return this.post('/order', order).then((data: IServerOrder) => data);
 	}
 }

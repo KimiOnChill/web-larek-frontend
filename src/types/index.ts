@@ -69,9 +69,11 @@ export interface IFormContacts {
 }
 
 export interface ICustomerModel {
-  setCustomerInfo(customerData: ICustomer): void;
+  setOneInfo(field: keyof ICustomer, value: string ): void;
+  //setCustomerInfo(customerData: ICustomer): void;
+ 
   // checkCustomerValidation(data: Record<keyof TPaymentModal, string>): boolean;
-  checkCustomerValidation(fieldName: string): boolean; // not in doc
+  checkCustomerValidation(fieldName: keyof ICustomer): boolean; // not in doc
 }
 
 export interface ICustomer {
@@ -82,7 +84,7 @@ export interface ICustomer {
 }
 
 // Ответ с сервера о созданном заказе
-export interface IOrderServer {
+export interface IServerOrder {
   id: string;
   total: number;
 }
@@ -108,5 +110,5 @@ export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 export interface IApi {
   getOneProduct(id: string): Promise<IItem>;
   getProductList(): Promise<IItem[]>;
-  addOrder(order: IOrder): Promise<IOrderServer>
+  addOrder(order: IOrder): Promise<IServerOrder>
 }
