@@ -28,6 +28,20 @@ export class FormOrder extends Form<IFormOrder> {
 			this.container
 		);
 
+		this.buttonCard.addEventListener('click', () => {
+			events.emit('payment:change', {method: this.buttonCard.name});
+			this.buttonCard.classList.toggle('button_alt-active');
+			if (this.buttonCash.classList.contains('button_alt-active'))
+				this.buttonCash.classList.remove('button_alt-active');
+		});
+
+		this.buttonCash.addEventListener('click', () => {
+			events.emit('payment:change', {method: this.buttonCard.name}); 
+			this.buttonCash.classList.toggle('button_alt-active');
+			if (this.buttonCard.classList.contains('button_alt-active'))
+				this.buttonCard.classList.remove('button_alt-active');
+		});
+
     this.submitButton.addEventListener('click', () => {
 			events.emit('contacts:open'); 
 		});

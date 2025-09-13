@@ -15,6 +15,7 @@ import { Modal } from './components/view/Modal';
 import { Page } from './components/view/Page';
 import { Basket } from './components/view/BasketView';
 import { FormOrder } from './components/view/FormOrder';
+import { FormContacts } from './components/view/FormContacts';
 
 //Templates
 const cardTemplate = document.querySelector('#card-catalog') as HTMLTemplateElement;
@@ -31,12 +32,16 @@ const api = new AppApi(CDN_URL, API_URL);
 //Models
 const gallery = new GalleryModel(events);
 const basketModel = new BasketModel(events);
-const CustomerModel = new CustomerDataModel;
+const CustomerModel = new CustomerDataModel(events);
 
 //View
 const page = new Page(document.querySelector('.page'), events);
 const modal = new Modal(document.querySelector('.modal'), events);
 const basket = new Basket(cloneTemplate(basketTemplate), events);
+
+//Forms
+const formOrder = new FormOrder(cloneTemplate(formOrderTemplate), events);
+const formContacts = new FormContacts(cloneTemplate(formContactsTemplate), events);
 
 api.getProductList()
 	.then((initialCards) => {
@@ -126,7 +131,7 @@ events.on('basket:changed', () => {
 });
 
 events.on('order:open', () => {
-	const formOrder = new FormOrder(cloneTemplate(formOrderTemplate), events);
+	
   modal.render({
   	content: formOrder.render({
       paymentMethod: null,
@@ -137,7 +142,7 @@ events.on('order:open', () => {
   });
 });
 
-// Изменилось одно из полей формы "order"
+// Изменилось поле формы "order"
 events.on(/^order\..*:change/, (data: { field: keyof IFormOrder, value: string }) => {
   CustomerModel.setOneInfo(data.field, data.value);
 });
@@ -145,6 +150,34 @@ events.on(/^order\..*:change/, (data: { field: keyof IFormOrder, value: string }
 // Изменилось одно из полей формы "contacts"
 events.on(/^contacts\..*:change/, (data: { field: keyof IFormContacts, value: string }) => {
   CustomerModel.setOneInfo(data.field, data.value);
+});
+
+events.on('payment:change', ({method}: {method: string}) => {
+	CustomerModel.setOneInfo('paymentMethod', method);
+});
+
+events.on('contacts:open', () => {
+	
+  modal.render({
+  	content: formContacts.render({
+      email: '',
+			phone: '',
+			valid: false,
+			errors: [],
+		})
+  });
+});
+
+events.on('validation:error', (errors: Partial<IFormOrder & IFormContacts>) => {
+  const { paymentMethod, address, email,  phone} = errors;
+
+	//order
+  formOrder.valid = !paymentMethod && !address;
+  formOrder.errors = Object.values({paymentMethod, address}).filter(i => !!i).join('; ');
+	
+	//contacts
+	formContacts.valid = !email && !phone;
+  formContacts.errors = Object.values({email, phone}).filter(i => !!i).join('; ');
 });
 
 // To show every emmiter

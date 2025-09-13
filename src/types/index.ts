@@ -95,6 +95,8 @@ export interface IOrder extends ICustomer {
 	items: string[]; // id array
 }
 
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+
 // !View Types, mb delete
 export type TGallery = Partial<IGallery>; 
 // export type TCardInfo = Pick<IItem, 'category' | 'title' | 'image' | 'price'>;
