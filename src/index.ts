@@ -16,6 +16,7 @@ import { Page } from './components/view/Page';
 import { Basket } from './components/view/BasketView';
 import { FormOrder } from './components/view/FormOrder';
 import { FormContacts } from './components/view/FormContacts';
+import { Success } from './components/view/Success';
 
 //Templates
 const cardTemplate = document.querySelector('#card-catalog') as HTMLTemplateElement;
@@ -24,6 +25,7 @@ const cardInBasketTemplate = document.querySelector('#card-basket') as HTMLTempl
 const basketTemplate = document.querySelector('#basket') as HTMLTemplateElement;
 const formOrderTemplate = document.querySelector('#order') as HTMLTemplateElement;
 const formContactsTemplate = document.querySelector('#contacts') as HTMLTemplateElement;
+const successTemplate = document.querySelector('#success') as HTMLTemplateElement;
 
 //Base
 const events = new EventEmitter();
@@ -38,6 +40,9 @@ const CustomerModel = new CustomerDataModel(events);
 const page = new Page(document.querySelector('.page'), events);
 const modal = new Modal(document.querySelector('.modal'), events);
 const basket = new Basket(cloneTemplate(basketTemplate), events);
+const success = new Success(cloneTemplate(successTemplate), {onClick: () => {
+	modal.close()}
+});
 
 //Forms
 const formOrder = new FormOrder(cloneTemplate(formOrderTemplate), events);
@@ -82,7 +87,8 @@ events.on('item:selected', (item: IItem) => {
 				}
 			}
 		});
-		modal.render({content: cardPreview.render({
+		modal.render({
+			content: cardPreview.render({
 				id: item.id,
 				title: item.title,
 				image: item.image,
@@ -91,7 +97,7 @@ events.on('item:selected', (item: IItem) => {
 				description: item.description,
 				isBought: basketModel.includesItem(item.id),
 				button: basketModel.includesItem(item.id)
-			})})
+		})})
 	}
 
 	item ? showItem(item): modal.close();
@@ -179,6 +185,15 @@ events.on('validation:error', (errors: Partial<IFormOrder & IFormContacts>) => {
 	formContacts.valid = !email && !phone;
   formContacts.errors = Object.values({email, phone}).filter(i => !!i).join('; ');
 });
+
+events.on('success:open', () => {
+	modal.render({
+		content: success.render({
+			total: 0
+		})
+	});
+	success.priceTotal = basketModel.getBasket().reduce((acc, x) => acc + gallery.getItem(x).price, 0);
+})
 
 // To show every emmiter
 events.onAll(({ eventName, data }) => {

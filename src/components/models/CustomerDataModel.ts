@@ -31,8 +31,12 @@ export class CustomerDataModel implements ICustomerModel {
 
 	setOneInfo(field: keyof ICustomer, value: string) {
 		this.orderEntered[field] = value;
-		if (this.validateOrder() || this.validateContacts()) {
-			this.events.emit('order:ready', this.orderEntered);
+		if (field === 'paymentMethod' || field === 'address') {
+			this.validateOrder();
+			//this.events.emit('order:ready', this.orderEntered);
+		} else {
+			this.validateContacts();
+			//this.events.emit('order:ready', this.orderEntered);
 		}
 	}
 

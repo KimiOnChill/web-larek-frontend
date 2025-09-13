@@ -90,12 +90,16 @@ export interface IServerOrder {
 }
 
 // Оформленный заказ для сервера
-export interface IOrder extends ICustomer {
+export interface IOrder {
 	total: number;
 	items: string[]; // id array
 }
 
-export type FormErrors = Partial<Record<keyof IOrder, string>>;
+export interface IOrderActions {
+	onClick: () => void;
+}
+
+export type FormErrors = Partial<Record<keyof ICustomer, string>>;
 
 // !View Types, mb delete
 export type TGallery = Partial<IGallery>; 
