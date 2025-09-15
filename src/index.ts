@@ -77,10 +77,10 @@ events.on('item:selected', (item: IItem) => {
 			onClick: () => {
 				//this tells basketModel how it changed and also changes button text
 				if (basketModel.includesItem(item.id)){
-					basketModel.deleteItem(item.id);
+					basketModel.deleteItem(item.id, item.price);
 					showItem(item);
 				}else{
-					basketModel.addItem(item.id);
+					basketModel.addItem(item.id, item.price);
 					showItem(item);
 				}
 			}
@@ -123,13 +123,13 @@ events.on('basket:open', () => {
 events.on('basket:changed', () => {
 	basket.items = basketModel.getBasket().map((id) => {
 		const element = new CardInBasket(cloneTemplate(cardInBasketTemplate), events, {onClick: () => {
-			basketModel.deleteItem(id)
+			basketModel.deleteItem(id, gallery.getItem(id).price)
 		}});
 		element.number = basketModel.getBasket().indexOf(id) + 1;
 		return element.render(gallery.getItem(id));
 	});
 
-	basket.total = basketModel.getBasket().reduce((acc, x) => acc + gallery.getItem(x).price, 0);
+	basket.total = basketModel.countTotalPrice();
 
   //update counter by BasketModel
 	page.render({
@@ -188,7 +188,7 @@ events.on('validation:error', (errors: Partial<IFormOrder & IFormContacts>) => {
 events.on('success:open', () => {
 	const order = {
 		...customerModel.getCustomer(),
-		total: basketModel.getBasket().reduce((acc, x) => acc + gallery.getItem(x).price, 0),
+		total: basketModel.countTotalPrice(),
 		items: basketModel.getBasket()
 	};
 

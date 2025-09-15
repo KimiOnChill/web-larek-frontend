@@ -39,9 +39,10 @@ export interface IModal {
 export interface IBasketModel {
   getBasket(): string[];
   setBasket(asketItems: string[]): void;
-  addItem(id: string): void;
-  deleteItem(id: string): void; 
+  addItem(id: string, price: number): void;
+  deleteItem(id: string, price: number): void; 
   countAmount(): number;
+  countTotalPrice(): number;
   includesItem(id: string): boolean;
   clearBasket(): void;
 }

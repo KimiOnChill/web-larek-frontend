@@ -24,6 +24,7 @@ export class Basket extends Component<IBasket> {
 		}
 
 		this.items = [];
+		this.total = 0;
 	}
 
 	set items(items: HTMLElement[]) {
